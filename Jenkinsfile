@@ -83,41 +83,19 @@ pipeline {
                 }
             }
 
-            stage('Updating Kubernetes deployment'){
+             stage('trigger config change pipeline'){
 
                 steps{
 
                     script{
-                        
-                        sh """
-                        cat deployment.yml
-                        sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yml
-                        cat deployment.yml
-                        """
+                            
+                        sh "curl -v -k --user jobby:11762150093642bee36671cee1b7bedae3 -X POST -H 'cache-control:no-cache' -H 'content-type:application/x-www-form-urlenconded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'http://100.24.6.182:8080/job/gitops_argocd_CD/buildWithParameters?token=gitops-config'"
 
                     }
+
                 }
-            }
 
-            stage('Push the changed deployment file to Git'){
-
-                steps{
-
-                    script{
-                       sh """
-                        git config --global user.name "tchocothepierre"
-                        git config --global user.email "tchocothepierre@gmail.com"
-                        git add deployment.yml
-                        git commit -m "latest manifest updated"
-                         """ 
-
-                        withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                        sh " git push https://github.com/tchocothepierre/gitops_argocd_project.git main"
-                        }                                                 
-                        
-                    }
-                }
-            }
+             }
 
     }
 

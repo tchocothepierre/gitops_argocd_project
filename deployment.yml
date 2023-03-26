@@ -13,11 +13,20 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: flask-app-container
+      - name: flask-app
         image: tchocothepierre/gitops-argo-app:v1
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-svc
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 5000
+    nodePort: 32000
+  selector:
+    app: flask-app
