@@ -123,7 +123,3 @@ pipeline {
 
 }
 
-
-
-
-//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  github passwd token
