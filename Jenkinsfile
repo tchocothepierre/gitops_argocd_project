@@ -107,15 +107,13 @@ pipeline {
                        sh """
                         git config --global user.name "tchocothepierre"
                         git config --global user.email "tchocothepierre@gmail.com"
-                        git add deployment.tml
+                        git add deployment.yml
                         git commit -m "latest manifest updated"
                          """ 
-                        withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                             git push "https://github.com/tchocothepierre/gitops_argocd_project.git" main
-                            }                        
 
-                       
-                          
+                        withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                        sh " git push https://github.com/tchocothepierre/gitops_argocd_project.git main"
+                        }                                                 
                         
                     }
                 }
@@ -128,4 +126,4 @@ pipeline {
 
 
 
-//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  github passwd token
+//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  github passwd token
