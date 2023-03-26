@@ -89,7 +89,7 @@ pipeline {
 
                     script{
                             
-                        sh "curl -v -k --user job:111f986b2643c5668454643081ebc49f5e -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlenconded' -data 'IMAGE_TAG=${IMAGE_TAG}' 'http://100.24.6.182:8080/job/gitops_argocd_CD/buildWithParameters?token=gitops-argocd'"
+                        sh "curl -X POST http://100.24.6.182:8080/job/gitops_argocd_CD/buildWithParameters?token=gitops-argocd --user job:111f986b2643c5668454643081ebc49f5e --data 'IMAGE_TAG=${IMAGE_TAG}'"
 
                     }
 
