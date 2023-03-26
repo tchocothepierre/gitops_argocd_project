@@ -41,7 +41,7 @@ pipeline {
 
             }
 
-            stage('Build Docker Image using Docker function'){
+            stage('Build Docker Image'){    //using Docker function
 
                 steps{
 
@@ -53,10 +53,9 @@ pipeline {
                 }
             }
 
-            stage('Push Docker Image'){
+            stage('Push Docker Image'){     //using Docker function
 
                 steps{
-
 
                     script{
 
@@ -65,6 +64,37 @@ pipeline {
                         docker_image.push('latest')
                     
                         }
+
+                    }
+                }
+            }
+
+            stage('Delete Docker Images'){
+
+                steps{
+
+                    script{
+
+                        sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                        sh "docker rmi ${IMAGE_NAME}:latest"
+
+                    }
+
+                }
+            }
+
+            stage('Updating Kubernetes deployment'){
+
+                steps{
+
+                    script{
+                        
+                        sh """
+                        cat deployment.yml
+                        sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yml
+                        cat deployment.yml
+
+                        """
 
                     }
                 }
